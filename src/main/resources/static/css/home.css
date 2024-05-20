@@ -1,0 +1,114 @@
+body {
+    margin: 0;
+    padding-top: 135px;
+    font-family: "Arvo", serif;
+    position: relative;
+    z-index: 1; /* Asegura que el contenido esté por encima del fondo */
+}
+
+.welcome-section {
+    text-align: center;
+    color: #1c1c1c;
+    padding: 100px 20px;
+    background: url('/static/images/fondo_home.webp') no-repeat center center/cover;
+    position: relative;
+    z-index: 2; /* Asegura que el contenido de bienvenida esté por encima del fondo */
+}
+
+.welcome-section h1 {
+    font-size: 50px;
+    margin: 20px 0;
+    text-shadow: 2px 2px 0 #fff, -2px -2px 0 #fff, -2px 2px 0 #fff, 2px -2px 0 #fff;
+}
+
+.welcome-section p {
+    font-size: 20px;
+    text-shadow: 1px 1px 0 #fff, -1px -1px 0 #fff, -1px 1px 0 #fff, 1px -1px 0 #fff;
+    margin: 20px 0;
+}
+
+.get-started {
+    display: inline-block;
+    padding: 10px 20px;
+    font-size: 18px;
+    color: #fff;
+    background-color: #0799b6;
+    border: none;
+    border-radius: 5px;
+    text-decoration: none;
+    transition: background-color 0.3s ease;
+}
+
+.get-started:hover {
+    background-color: #067b9a;
+}
+
+.homepage {
+    text-align: center;
+    color: #1c1c1c;
+    padding: 50px 20px;
+    position: relative;
+    z-index: 2; /* Asegura que las tarjetas estén por encima del fondo */
+}
+
+.why-choose {
+    display: flex;
+    justify-content: center;
+    margin: 50px 0;
+    flex-wrap: wrap;
+}
+
+.card {
+    flex: 1;
+    padding: 20px;
+    margin: 10px 20px;
+    background-color: rgba(156, 210, 211, 0.9);
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    max-width: 300px;
+    box-sizing: border-box;
+    text-align: center; /* Centra todo el contenido dentro de la tarjeta */
+}
+
+.singleservice {
+    background-color: #f3f3f3;
+    padding: 40px;
+    color: #b2b2b2;
+    font-family: avenir, sans-serif;
+    text-align: left;
+    margin-bottom: 15px;
+    border-bottom: 5px solid skyblue;
+}
+
+h2.servicetitle, .card h3 {
+    font-family: "Century Gothic", sans-serif;
+    font-size: 16pt;
+    font-weight: normal;
+    letter-spacing: 1px;
+    padding-bottom: 0px;
+    text-align: center;
+    text-transform: uppercase;
+    color: #8c8c8c;
+}
+
+.card p {
+    text-align: center; /* Centra el texto <p> dentro de la tarjeta */
+}
+
+img.serviceicon {
+    width: 20%;
+    height: auto;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    padding-bottom: 15px;
+    -webkit-filter: grayscale(100%);
+    filter: grayscale(100%);
+    opacity: .5;
+}
+
+@media (max-width:500px) {
+    .singleservice, .singleserviceb {
+        width: 100%;
+    }
+}

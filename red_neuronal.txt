@@ -1,0 +1,77 @@
+Sigmoid Node 0
+    Inputs    Weights
+    Threshold    2.94881044940788
+    Node 2    -8.2720138964087
+    Node 3    -1.961088711808754
+    Node 4    -5.393925382744289
+    Node 5    -5.652419493312062
+    Node 6    -6.211113727486442
+Sigmoid Node 1
+    Inputs    Weights
+    Threshold    -2.9490449449021288
+    Node 2    8.276037924517288
+    Node 3    1.9611270060180002
+    Node 4    5.387916340968087
+    Node 5    5.653476873032719
+    Node 6    6.2186501552690645
+Sigmoid Node 2
+    Inputs    Weights
+    Threshold    53.75815596406247
+    Attrib age    0.10719250537842571
+    Attrib gender    0.38759566630064296
+    Attrib impluse    -8.649708442718168
+    Attrib pressurehight    0.7569980681487587
+    Attrib pressurelow    -0.4444685954913102
+    Attrib glucose    -0.7552925044824439
+    Attrib kcm    31.230368642331463
+    Attrib troponin    32.29126756337595
+Sigmoid Node 3
+    Inputs    Weights
+    Threshold    28.22152173977797
+    Attrib age    4.618592936944462
+    Attrib gender    2.267388190973016
+    Attrib impluse    -6.666392127175736
+    Attrib pressurehight    -7.3340438447531895
+    Attrib pressurelow    2.3214247792440754
+    Attrib glucose    -2.6299714915729093
+    Attrib kcm    9.80625284969413
+    Attrib troponin    27.082027409274552
+Sigmoid Node 4
+    Inputs    Weights
+    Threshold    44.89141956742371
+    Attrib age    1.0510540788309506
+    Attrib gender    -0.09612720666038872
+    Attrib impluse    -2.954618171701345
+    Attrib pressurehight    -0.06102691409243702
+    Attrib pressurelow    0.6556974258710913
+    Attrib glucose    0.15853373991131478
+    Attrib kcm    15.343241060084564
+    Attrib troponin    34.052632099233875
+Sigmoid Node 5
+    Inputs    Weights
+    Threshold    7.1329542087461135
+    Attrib age    12.626131350131864
+    Attrib gender    -5.021857573930492
+    Attrib impluse    4.107194733582563
+    Attrib pressurehight    2.0756907076695494
+    Attrib pressurelow    -4.412025841462162
+    Attrib glucose    3.3626160554486266
+    Attrib kcm    7.180230991256075
+    Attrib troponin    8.226249413174447
+Sigmoid Node 6
+    Inputs    Weights
+    Threshold    23.916367530277576
+    Attrib age    0.799814543320677
+    Attrib gender    -0.21832292603435938
+    Attrib impluse    0.4473651445671888
+    Attrib pressurehight    -0.3889458500488368
+    Attrib pressurelow    0.9146662984806481
+    Attrib glucose    0.38187949133688626
+    Attrib kcm    6.770230100519172
+    Attrib troponin    19.357872047755563
+Class negative
+    Input
+    Node 0
+Class positive
+    Input
+    Node 1

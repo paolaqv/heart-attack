@@ -1,0 +1,158 @@
+
+* {
+  font-family: "Arvo", serif;
+}
+  
+body {
+  display: grid;
+  place-items: center;
+  margin: 0;
+  height: 100vh;
+  background-color: #f2e6cf;
+}
+
+main {
+  width: 50%;
+  margin: 20px auto;
+  min-width: 1000px;
+  background: linear-gradient(90deg, rgba(17, 76, 95) 0%, rgba(7, 153, 182) 100%);
+  border-radius: 30px;
+  position: relative;
+  margin-bottom: 20px;
+}
+
+h3, h1, p {
+  margin: 0 30px;
+}
+
+h3 {
+  margin-top: 30px;
+  color: #f2e6cf;
+  font-size: 28px;
+  font-weight: 300;
+}
+
+h1 {
+  margin-bottom: 30px;
+  color: #f2e6cf;
+  font-size: 55px;
+}
+
+p {
+  margin: 30px;
+  font-weight: 300;
+  color: #A9C3B1;
+}
+
+button {
+    padding: 15px 30px;
+    border-radius: 100px;
+    border: none;
+    background-color: #f2e6cf;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s, box-shadow 0.3s; /* Añadir transiciones para suavizar los cambios */
+  }
+  
+  button:hover {
+    background-color: #9cd2d3; /* Cambiar el color de fondo al pasar el cursor */
+    box-shadow: 0 0 10px 3px rgba(156, 210, 211); /* Añadir luminosidad con una sombra verde y ligera */
+  }
+#subirBtn {
+  border-top-left-radius: 0px;
+  border-bottom-left-radius: 0px;
+  margin-right: 10px;
+  position: relative;
+}
+
+#subirBtn + #fileNameDisplay {
+    margin-left: 10px; /* Espacio entre el botón y el texto del archivo */
+    color: #4CAF50; /* Color del texto para mayor visibilidad */
+    font-weight: bold; /* Hacer el texto más notable */
+}
+
+
+#btnArbol, #btnRed, #btnClauster{
+  border-top-left-radius: 0px;
+  border-bottom-left-radius: 0px;
+  margin-right: 10px;
+  position: relative;
+}
+
+#subirBtn::before, #subirBtn::after {
+  content: "";
+  position: absolute;
+  height: 60px;
+  width: 30px;
+  background-color: transparent;
+}
+
+#subirBtn::before {
+  box-shadow: 0 -30px 0 0 #f2e6cf;
+  top: 100%;
+  left: 0;
+  border-top-left-radius: 30px;
+}
+
+#subirBtn::after {
+  box-shadow: 0 30px 0 0 #f2e6cf;
+  top: -60px;
+  left: 0;
+  border-bottom-left-radius: 30px;
+}
+
+#btnArbol::before, #btnArbol::after, #btnRed::before, #btnRed::after, #btnClauster::before, #btnClauster::after{
+  content: none;
+  position: absolute;
+  height: 60px;
+  width: 30px;
+  background-color: transparent;
+}
+
+#btnArbol::before, #btnRed::before, #btnClauster::before {
+  box-shadow: 0 -30px 0 0 #f2e6cf;
+  top: 100%;
+  left: 0;
+  border-top-left-radius: 30px;
+}
+
+#btnArbol::after, #btnRed::after, #btnClauster::after{
+  box-shadow: 0 30px 0 0 #f2e6cf;
+  top: -60px;
+  left: 0;
+  border-bottom-left-radius: 30px;
+}
+
+#subirData, #visualizarGraficos {
+    position: absolute;
+    bottom: 0px;
+    right: 0px;
+    height: 350px; 
+    width: 420px; 
+    background-repeat: no-repeat;
+    background-size: contain; 
+  }
+
+  #subirData {
+    background-image: url("/static/images/subir_data.png");
+  }
+  
+  #visualizarGraficos {
+    background-image: url("/static/images/visualizar_graficos.png");
+  }
+
+
+  @media (max-width: 768px) {
+    body {
+        padding-top: 100px; /* Ajustar el padding superior para dispositivos móviles */
+    }
+
+    main {
+        width: 90%; /* Mayor anchura para pantallas más pequeñas */
+    }
+
+    .navbar, .navbar a {
+        padding: 10px; /* Ajustar padding para una mejor accesión en pantallas pequeñas */
+        font-size: 14px; /* Ajustar el tamaño de fuente para mejor legibilidad */
+    }
+}

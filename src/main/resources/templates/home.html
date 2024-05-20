@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- STYLES LINKS -->
+    <link rel="stylesheet" href="/static/css/visualizarGraficos.css">
+    <link rel="stylesheet" href="/static/css/navBar.css">
+    <link rel="stylesheet" href="/static/css/background.css">
+    <link rel="stylesheet" href="/static/css/home.css">
+    <link rel="stylesheet" href="/static/css/help.css">
+    <!-- FONTS -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Arvo:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet">
+    <title>Heart Attack Prevention</title>
+</head>
+<body>
+    <!-- ANIMATED BACKGROUND -->
+    <div class='box'>
+        <div class='wave -one'></div>
+        <div class='wave -two'></div>
+        <div class='wave -three'></div>
+    </div>
+
+    <!-- NAVBAR -->
+    <div class="navbar">
+        <img src="/static/images/logo.png" alt="Logo" style="height:40px;"> Heart Attack Prevention
+        <div class="navbar-right">
+            <a href="/">Home</a>
+            <a href="/index">Análisis</a>
+            <a href="#" id="help-btn">Ayuda</a>
+        </div>
+    </div>
+
+    <!-- HOMEPAGE CONTENT -->
+    <div class="welcome-section">
+        <h1>BIENVENIDOS A HEART ATTACK PREVENTION</h1>
+        <p>Analiza tus dataset y obtén una mejor predicción através de modelos matemáticos</p>
+        <a href="/index" class="get-started">INICIAR</a>
+    </div>
+
+    <div class="homepage">
+        <div class="why-choose service-container">
+            <div class="card singleservice">
+                <img class="serviceicon" src="https://www.freeiconspng.com/uploads/search-icon-png-0.png" alt="Icono 1">
+                <h3 class="servicetitle">OBJETIVO</h3>
+                <p>Obtener un análisis de datos avanzados para la mejora de predicciones y prevención de ataques al corazón.</p>
+            </div>
+            <div class="card singleservice">
+                <img class="serviceicon" src="https://www.freeiconspng.com/uploads/results-icon-png-13.png" alt="Icono 2">
+                <h3 class="servicetitle">ReSULTADOS</h3>
+                <p>Identifica patrones y fatores de riesgo de ataques al corazón generando visualizaciones y reportes para tomar decisiones informadas.</p>
+            </div>
+            <div class="card singleservice">
+                <img class="serviceicon" src="https://www.freeiconspng.com/uploads/document-icon-28.png" alt="Icono 3">
+                <h3 class="servicetitle">Reportes</h3>
+                <p>Se brinda un respaldo de información en este caso generar reportes para que los profesionales de salud lo tengan al alcance.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- VENTANA EMERGENTE HELP -->
+    <div id="popup" class="popup">
+        <div class="popup-content">
+            <span class="close-btn">&times;</span>
+            <h2>GUÍA DE AYUDA</h2>
+            <p>1. Presiona el botón "Elige tu dataset" 🗂️ y seleccionalo asegurandote que sea en formato ".csv" 📄</p>
+            <p>2. Selecciona el modelo matemático para gráficar entre Árboles binarios 🌳, Redes Neuronales 🧠 y Cluster 🫧.</p>
+            <p>3. Una vez seleccionado el modelo podrás visualizarlo y en la parte superior derecha tienes la opción de descargar un reporte de tus gráficos o datos 📋.</p>
+            <p>4. Tu reporte iniciará su descarga de forma automática 📥.</p>
+            <h2>NOTA</h2>
+            <p>5. Recuerda tener una buena conexión a internet para visualizar tus gráficos 📈 y obtener un reporte 📑.</p>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const helpBtn = document.getElementById('help-btn');
+            const popup = document.getElementById('popup');
+            const closeBtn = document.querySelector('.close-btn');
+    
+            helpBtn.addEventListener('click', function () {
+                popup.style.display = 'flex';
+            });
+    
+            closeBtn.addEventListener('click', function () {
+                popup.style.display = 'none';
+            });
+    
+            window.addEventListener('click', function (event) {
+                if (event.target == popup) {
+                    popup.style.display = 'none';
+                }
+            });
+        });
+    </script>
+
+</body>
+</html>
