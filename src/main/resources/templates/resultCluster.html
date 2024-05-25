@@ -54,8 +54,8 @@
         <img th:src="${imagePath}" alt="Cluster">
     </div>
     <div class="center">
-    <pre th:if="${dotContent}" th:text="${dotContent}"></pre>
-    <p th:if="${error}" th:text="${error}"></p>
+        <pre th:text="${fileContent}"></pre>
+        <p th:if="${error}" th:text="${error}"></p>
     </div>
     <!-- BOTON GENERAR REPORTE-->
     <div class="button-container">

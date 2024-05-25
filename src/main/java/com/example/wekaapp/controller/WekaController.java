@@ -1,4 +1,5 @@
 package com.example.wekaapp.controller;
+
 import com.itextpdf.io.image.ImageData;
 import com.itextpdf.io.image.ImageDataFactory;
 import com.itextpdf.kernel.pdf.PdfDocument;
@@ -31,11 +32,17 @@ public class WekaController {
     private File uploadedFile;
     private final String outputDir = System.getProperty("java.io.tmpdir");
     private final String staticDir = "src/main/resources/static/images";
+    private String currentArbolPngFile;
+    private String currentRedNeuronalPngFile;
+    private String currentRedNeuronalTxtFile;
+    private String currentClusteringPngFile;
+    private String currentClusteringTxtFile;
 
     @GetMapping("/")
     public String home() {
         return "home";
     }
+
     @GetMapping("/index")
     public String index() {
         return "index";
@@ -44,7 +51,7 @@ public class WekaController {
     @PostMapping("/upload")
     public String uploadFile(@RequestParam("file") MultipartFile file, Model model) {
         try {
-            uploadedFile = new File(outputDir + "/" + file.getOriginalFilename());
+            uploadedFile = new File(outputDir + "/" + UUID.randomUUID() + "_" + file.getOriginalFilename());
             file.transferTo(uploadedFile);
             model.addAttribute("message", "Archivo subido exitosamente.");
             model.addAttribute("fileName", file.getOriginalFilename());
@@ -64,11 +71,11 @@ public class WekaController {
 
         try {
             String datasetPath = uploadedFile.getPath();
-            String arbolDotFile = "arbol.dot";
-            String arbolPngFile = "arbol.png";
+            String arbolDotFile = outputDir + "/arbol_" + UUID.randomUUID() + ".dot";
+            currentArbolPngFile = staticDir + "/arbol_" + UUID.randomUUID() + ".png";
 
-            generarArbol(datasetPath, arbolDotFile, arbolPngFile);
-            model.addAttribute("imagePath", "/" + arbolPngFile);
+            generarArbol(datasetPath, arbolDotFile, currentArbolPngFile);
+            model.addAttribute("imagePath", "/" + currentArbolPngFile);
 
         } catch (IOException e) {
             e.printStackTrace();
@@ -87,15 +94,15 @@ public class WekaController {
 
         try {
             String datasetPath = uploadedFile.getPath();
-            String redNeuronalDotFile = "red_neuronal.dot";
-            String redNeuronalPngFile = "red_neuronal.png";
-            String redNeuronalTxtFile = "red_neuronal.txt";
+            String redNeuronalDotFile = outputDir + "/red_neuronal_" + UUID.randomUUID() + ".dot";
+            currentRedNeuronalPngFile = staticDir + "/red_neuronal_" + UUID.randomUUID() + ".png";
+            currentRedNeuronalTxtFile = outputDir + "/red_neuronal_" + UUID.randomUUID() + ".txt";
 
-            generarRedNeuronal(datasetPath, redNeuronalDotFile, redNeuronalPngFile);
-            obtenerEstructuraRedNeuronal(datasetPath, redNeuronalTxtFile);
+            generarRedNeuronal(datasetPath, redNeuronalDotFile, currentRedNeuronalPngFile);
+            obtenerEstructuraRedNeuronal(datasetPath, currentRedNeuronalTxtFile);
 
-            model.addAttribute("imagePath", "/" + redNeuronalPngFile);
-            model.addAttribute("fileContent", new String(Files.readAllBytes(Paths.get(redNeuronalTxtFile))));
+            model.addAttribute("imagePath", "/" + currentRedNeuronalPngFile);
+            model.addAttribute("fileContent", new String(Files.readAllBytes(Paths.get(currentRedNeuronalTxtFile))));
 
         } catch (IOException e) {
             e.printStackTrace();
@@ -114,13 +121,13 @@ public class WekaController {
 
         try {
             String datasetPath = uploadedFile.getPath();
-            String clusteringDotFile = "clustering.dot";
-            String clusteringPngFile = "clustering.png";
+            currentClusteringTxtFile = outputDir + "/clustering_" + UUID.randomUUID() + ".txt";
+            currentClusteringPngFile = staticDir + "/clustering_" + UUID.randomUUID() + ".png";
 
-            ejecutarKMeans(datasetPath, clusteringDotFile, clusteringPngFile);
+            ejecutarKMeans(datasetPath, currentClusteringTxtFile, currentClusteringPngFile);
 
-            model.addAttribute("imagePath", "/" + clusteringPngFile);
-            model.addAttribute("dotContent", new String(Files.readAllBytes(Paths.get(clusteringDotFile))));
+            model.addAttribute("imagePath", "/" + currentClusteringPngFile);
+            model.addAttribute("fileContent", new String(Files.readAllBytes(Paths.get(currentClusteringTxtFile))));
 
         } catch (IOException e) {
             e.printStackTrace();
@@ -167,44 +174,47 @@ public class WekaController {
     }
 
     private void generateResultPdf(Document document) throws IOException {
-        String arbolPngFile = staticDir + "/arbol.png";
-        if (new File(arbolPngFile).exists()) {
-            ImageData data = ImageDataFactory.create(arbolPngFile);
+        if (currentArbolPngFile != null && new File(currentArbolPngFile).exists()) {
+            ImageData data = ImageDataFactory.create(currentArbolPngFile);
             Image img = new Image(data);
             document.add(new Paragraph("Decision Tree Result"));
             document.add(img);
         } else {
-            document.add(new Paragraph("Imagen no encontrada: " + arbolPngFile));
+            document.add(new Paragraph("Imagen no encontrada: " + currentArbolPngFile));
         }
     }
 
     private void generateResultRedPdf(Document document) throws IOException {
-        String redNeuronalPngFile = staticDir + "/red_neuronal.png";
-        String redNeuronalTxtFile = outputDir + "/red_neuronal.txt";
-        if (new File(redNeuronalPngFile).exists()) {
-            ImageData data = ImageDataFactory.create(redNeuronalPngFile);
+        if (currentRedNeuronalPngFile != null && new File(currentRedNeuronalPngFile).exists()) {
+            ImageData data = ImageDataFactory.create(currentRedNeuronalPngFile);
             Image img = new Image(data);
             document.add(new Paragraph("Neural Network Result"));
             document.add(img);
-            String content = new String(Files.readAllBytes(Paths.get(redNeuronalTxtFile)));
-            document.add(new Paragraph(content));
+            if (currentRedNeuronalTxtFile != null && new File(currentRedNeuronalTxtFile).exists()) {
+                String content = new String(Files.readAllBytes(Paths.get(currentRedNeuronalTxtFile)));
+                document.add(new Paragraph(content));
+            } else {
+                document.add(new Paragraph("Archivo de texto no encontrado: " + currentRedNeuronalTxtFile));
+            }
         } else {
-            document.add(new Paragraph("Imagen no encontrada: " + redNeuronalPngFile));
+            document.add(new Paragraph("Imagen no encontrada: " + currentRedNeuronalPngFile));
         }
     }
 
     private void generateResultClusterPdf(Document document) throws IOException {
-        String clusteringPngFile = staticDir + "/clustering.png";
-        String clusteringDotFile = outputDir + "/clustering.dot";
-        if (new File(clusteringPngFile).exists()) {
-            ImageData data = ImageDataFactory.create(clusteringPngFile);
+        if (currentClusteringPngFile != null && new File(currentClusteringPngFile).exists()) {
+            ImageData data = ImageDataFactory.create(currentClusteringPngFile);
             Image img = new Image(data);
             document.add(new Paragraph("Clustering Result"));
             document.add(img);
-            String dotContent = new String(Files.readAllBytes(Paths.get(clusteringDotFile)));
-            document.add(new Paragraph(dotContent));
+            if (currentClusteringTxtFile != null && new File(currentClusteringTxtFile).exists()) {
+                String content = new String(Files.readAllBytes(Paths.get(currentClusteringTxtFile)));
+                document.add(new Paragraph(content));
+            } else {
+                document.add(new Paragraph("Archivo de texto no encontrado: " + currentClusteringTxtFile));
+            }
         } else {
-            document.add(new Paragraph("Imagen no encontrada: " + clusteringPngFile));
+            document.add(new Paragraph("Imagen no encontrada: " + currentClusteringPngFile));
         }
     }
 
@@ -273,7 +283,7 @@ public class WekaController {
         }
     }
 
-    private void ejecutarKMeans(String datasetPath, String outputDotFile, String outputPngFile) throws IOException {
+    private void ejecutarKMeans(String datasetPath, String outputTxtFile, String outputPngFile) throws IOException {
         try {
             CSVLoader loader = new CSVLoader();
             loader.setSource(new File(datasetPath));
@@ -287,16 +297,17 @@ public class WekaController {
             eval.setClusterer(kmeans);
             eval.evaluateClusterer(data);
 
-            double[] rawAssignments = eval.getClusterAssignments();
-            int[] assignments = new int[rawAssignments.length];
-            for (int i = 0; i < rawAssignments.length; i++) {
-                assignments[i] = (int) Math.round(rawAssignments[i]);
-            }
+            // Guardar las asignaciones de los clusters en un archivo de texto
+            FileWriter txtWriter = new FileWriter(outputTxtFile);
+            txtWriter.write(eval.clusterResultsToString());
+            txtWriter.close();
 
-            FileWriter dotWriter = new FileWriter(outputDotFile);
+            // Crear el archivo .dot para el gráfico de dispersión
+            FileWriter dotWriter = new FileWriter(outputTxtFile.replace(".txt", ".dot"));
             dotWriter.write("graph clustering {\n");
+            double[] assignments = eval.getClusterAssignments();
             for (int i = 0; i < data.numInstances(); i++) {
-                int clusterIndex = assignments[i];
+                int clusterIndex = (int) assignments[i];
                 double[] values = data.instance(i).toDoubleArray();
                 dotWriter.write(String.format("  \"%d\" [pos=\"%f,%f\"];\n", i, values[0], values[1]));
                 dotWriter.write(String.format("  \"%d\" -- \"%d\" [color=cluster%d];\n", i, clusterIndex, clusterIndex));
@@ -304,13 +315,13 @@ public class WekaController {
             dotWriter.write("}\n");
             dotWriter.close();
 
-            runCommand("dot -Tpng " + outputDotFile + " -o " + outputPngFile);
+            // Ejecutar Graphviz para convertir el archivo .dot en una imagen del gráfico de dispersión
+            runCommand("dot -Tpng " + outputTxtFile.replace(".txt", ".dot") + " -o " + outputPngFile);
 
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
-
 
     private void runCommand(String command) throws IOException, InterruptedException {
         ProcessBuilder processBuilder = new ProcessBuilder(command.split(" "));
