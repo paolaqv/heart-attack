@@ -1,33 +1,25 @@
-
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <!-- STYLE LINKS -->
     <link rel="stylesheet" href="/static/css/seccionData.css">
     <link rel="stylesheet" href="/static/css/navBar.css">
     <link rel="stylesheet" href="/static/css/background.css">
     <link rel="stylesheet" href="/static/css/help.css"> 
-
-    <!-- SCRIPTS -->
     <script src="/scripts/subirData.js"></script>
     <script src="/scripts/visualizarGraficos.js"></script>
-    <!-- FONTS -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Arvo:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet">
     <title>Heart Attack Dataset Analysis</title>
 </head>
 <body>
-    <!-- ANIMATED BACKGROUND -->
     <div class='box'>
         <div class='wave -one'></div>
         <div class='wave -two'></div>   
         <div class='wave -three'></div>
     </div>
-    <!-- NAVBAR -->
     <div class="navbar">
         <img src="/static/images/logo.png" alt="Logo" style="height:40px;"> Heart Attack Prevention
         <div class="navbar-right">
@@ -36,37 +28,34 @@
             <a href="#" id="help-btn">Ayuda</a>
         </div>
     </div>
-    <!-- SUBIR DATASET -->
     <main>
         <h3>Sector</h3>
         <h1>DATASET</h1>
-        <!-- Contenedor con display flex -->
         <div style="display: flex; align-items: center;">
-            <!-- Botón que activará el input de tipo file -->
             <form action="/upload" method="post" enctype="multipart/form-data">
                 <input type="file" id="fileInput" name="file" style="display: none" accept=".csv" onchange="updateFileName()">
                 <button id="subirBtn" type="button" onclick="document.getElementById('fileInput').click();">Elige tu dataset</button>
-                <div id="fileNameDisplay" style="margin-left: 20px;" th:text="${fileName != null} ? 'Archivo seleccionado: ' + ${fileName} : 'No se ha seleccionado ningún archivo'"></div>
-                <button type="submit">Subir</button>
+                <div id="fileNameDisplay" style="margin-left: 20px;">
+                    <span th:if="${fileName != null}" th:text="'Archivo seleccionado: ' + ${fileName}"></span>
+                    <span th:if="${fileName == null}">No se ha seleccionado ningún archivo</span>
+                </div>                <button type="submit">Subir</button>
+                <button type="button" onclick="location.href='/editarDataset'" th:disabled="${fileName == null}">Editar Dataset</button>
             </form>
         </div>
         <p>Asegúrate de que tu dataset cumpla el formato de ".csv"</p>
         <div id="subirData"></div>
     </main>
-    
-    <!-- VISUALIZAR GRAFICOS -->
     <main>
-        <h3>Sector </h3>
+        <h3>Sector</h3>
         <h1>ANÁLISIS</h1>
         <div style="display: flex; align-items: center;">
             <button id="btnArbol" onclick="location.href='/result';">Graficar Árbol</button>
             <button id="btnRed" onclick="location.href='/resultRed';">Graficar Red</button>
             <button id="btnClauster" onclick="location.href='/resultCluster';">Graficar Cluster</button>
-            </div>
+        </div>
         <p>Visualiza gráficos: Árboles binarios, Red Neuronal, Cluster</p>
         <div id="visualizarGraficos"></div>
     </main>     
-    <!-- VENTANA EMERGENTE HELP -->
     <div id="popup" class="popup">
         <div class="popup-content">
             <span class="close-btn">&times;</span>
@@ -99,8 +88,20 @@
                     popup.style.display = 'none';
                 }
             });
+
+            // Mostrar botón "Editar Dataset" si se ha subido un archivo
+            const fileNameDisplay = document.getElementById('fileNameDisplay');
+            if (fileNameDisplay.innerText.includes('Archivo seleccionado:')) {
+                document.getElementById('editarBtn').style.display = 'inline-block';
+            }
         });
+
+        function updateFileName() {
+            const input = document.getElementById('fileInput');
+            const fileNameDisplay = document.getElementById('fileNameDisplay');
+            fileNameDisplay.innerText = 'Archivo seleccionado: ' + input.files[0].name;
+            document.getElementById('editarBtn').style.display = 'inline-block';
+        }
     </script>
 </body>
 </html>
-

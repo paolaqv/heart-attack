@@ -9,22 +9,30 @@ import com.itextpdf.layout.element.Image;
 import com.itextpdf.layout.element.Paragraph;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import weka.classifiers.functions.MultilayerPerceptron;
 import weka.clusterers.ClusterEvaluation;
 import weka.clusterers.SimpleKMeans;
 import weka.core.Instances;
 import weka.core.converters.CSVLoader;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 
-import java.io.File;
+import java.io.*;
+import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.UUID;
+import java.util.*;
+import java.util.Map;
+import java.util.List;
 
 @Controller
 public class WekaController {
@@ -44,7 +52,10 @@ public class WekaController {
     }
 
     @GetMapping("/index")
-    public String index() {
+    public String index(Model model) {
+        if (uploadedFile != null) {
+            model.addAttribute("fileName", uploadedFile.getName());
+        }
         return "index";
     }
 
@@ -55,12 +66,66 @@ public class WekaController {
             file.transferTo(uploadedFile);
             model.addAttribute("message", "Archivo subido exitosamente.");
             model.addAttribute("fileName", file.getOriginalFilename());
+            model.addAttribute("filePath", uploadedFile.getPath());
         } catch (Exception e) {
             e.printStackTrace();
             model.addAttribute("error", "Error al subir el archivo: " + e.getMessage());
         }
         return "index";
     }
+
+    @GetMapping("/editarDataset")
+    public String editarDataset(Model model) {
+        if (uploadedFile == null) {
+            model.addAttribute("error", "No se ha subido ningún archivo.");
+            return "index";
+        }
+        return "editarDataset";
+    }
+
+    @GetMapping("/loadDataset")
+    @ResponseBody
+    public Map<String, Object> loadDataset() {
+        Map<String, Object> response = new HashMap<>();
+        try {
+            CSVLoader loader = new CSVLoader();
+            loader.setSource(uploadedFile);
+            Instances data = loader.getDataSet();
+            List<String> headers = new ArrayList<>();
+            for (int i = 0; i < data.numAttributes(); i++) {
+                headers.add(data.attribute(i).name());
+            }
+            List<List<String>> rows = new ArrayList<>();
+            for (int i = 0; i < data.numInstances(); i++) {
+                List<String> row = new ArrayList<>();
+                for (int j = 0; j < data.numAttributes(); j++) {
+                    row.add(data.instance(i).toString(j));
+                }
+                rows.add(row);
+            }
+            response.put("headers", headers);
+            response.put("rows", rows);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return response;
+    }
+
+    @PostMapping(value = "/guardarDataset", consumes = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<String> guardarDataset(@RequestBody Map<String, Object> payload) {
+        List<List<String>> dataset = (List<List<String>>) payload.get("dataset");
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(uploadedFile))) {
+            for (List<String> row : dataset) {
+                writer.write(String.join(",", row));
+                writer.newLine();
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error al guardar el dataset");
+        }
+        return ResponseEntity.ok("Dataset guardado exitosamente");
+    }
+    
 
     @GetMapping("/result")
     public String result(Model model) {
@@ -164,6 +229,8 @@ public class WekaController {
 
             model.addAttribute("message", "Reporte generado exitosamente.");
             model.addAttribute("pdfPath", pdfOutputPath);
+            model.addAttribute("fileName", uploadedFile.getName());  // Añadir nombre del archivo
+
 
         } catch (IOException e) {
             e.printStackTrace();
