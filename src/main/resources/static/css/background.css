@@ -3,6 +3,8 @@
 	top: 0;
 	transform: rotate(80deg);
 	left: 0;
+  z-index: 0;
+  pointer-events: none;
 }
 
 .wave {
@@ -21,6 +23,7 @@
   transform-origin: 50% 48%;
   border-radius: 43%;
   animation: drift 7000ms infinite linear;
+  z-index: 1; /* Fondo detrás del contenido */
 }
 
 .wave.-three {
